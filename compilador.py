@@ -4,12 +4,16 @@
 
 import sys
 
+# garante que a saída funciona corretamente no Windows
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+
 # Cabeçalho do arquivo assembly gerado 
 CABECALHO_ASM = """\
     .section .text
-    .globl _inicio
+    .globl _start
 
-_inicio:
+_start:
 """
 
 # Rodapé: chama as rotinas de suporte do runtime 
@@ -23,7 +27,7 @@ RODAPE_ASM = """\
 
 def gerar_assembly(numero: int) -> str:
     linhas = [CABECALHO_ASM]
-    linhas.append(f"    mov ${numero}, %eax\n")
+    linhas.append(f"    mov ${numero}, %rax\n")
     linhas.append(RODAPE_ASM)
     return "".join(linhas)
 
